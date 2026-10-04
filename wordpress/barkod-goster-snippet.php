@@ -2,7 +2,7 @@
  * Ürün sayfasında barkodu göster
  *
  * Varyasyonlu ürünlerde barkod, seçilen varyasyonun açıklamasının ("Ürün kodu: ...") altına eklenir.
- * Basit ürünlerde kısa açıklamanın altına eklenir. Değer "GTIN, UPC, EAN veya ISBN" alanından okunur.
+ * Basit ürünlerde sepete ekle alanının üstünde gösterilir. Değer "GTIN, UPC, EAN veya ISBN" alanından okunur.
  */
 function dincel_barkod_satiri( $barkod ) {
 	return '<div class="dincel-barkod">Barkod: ' . esc_html( $barkod ) . '</div>';
@@ -16,11 +16,13 @@ add_filter( 'woocommerce_available_variation', function ( $data, $product, $vari
 	return $data;
 }, 20, 3 );
 
-add_filter( 'woocommerce_short_description', function ( $description ) {
+add_action( 'woocommerce_before_add_to_cart_quantity', function () {
 	global $product;
-	if ( ! is_product() || ! $product instanceof WC_Product || ! $product->is_type( 'simple' ) ) {
-		return $description;
+	if ( ! $product instanceof WC_Product || ! $product->is_type( 'simple' ) ) {
+		return;
 	}
 	$barkod = $product->get_global_unique_id();
-	return $barkod ? $description . dincel_barkod_satiri( $barkod ) : $description;
-}, 20 );
+	if ( $barkod ) {
+		echo dincel_barkod_satiri( $barkod ); // phpcs:ignore WordPress.Security.EscapeOutput -- dincel_barkod_satiri escapes.
+	}
+} );
