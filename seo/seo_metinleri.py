@@ -14,11 +14,11 @@ MARKA = 'Dincel Çelik'
 # ---- Ana sayfa, mağaza ve kurumsal sayfalar: (post id, başlık, açıklama) ----
 SAYFALAR = [
     (24, 'Dincel Çelik | Paslanmaz Çelik Çatal, Kaşık ve Bıçak',
-     "2008'den beri Bayrampaşa'daki atölyemizde paslanmaz çelik çatal, kaşık, bıçak takımları ve servis ürünleri üretiyoruz. Sade, gold ve titanyum seçenekleri."),
+     "2015'ten beri Bayrampaşa'daki atölyemizde paslanmaz çelik çatal, kaşık, bıçak takımları ve servis ürünleri üretiyoruz. Sade, gold ve titanyum seçenekleri."),
     (18, 'Tüm Ürünler: Çatal, Kaşık, Bıçak ve Takımlar | Dincel Çelik',
      'Paslanmaz çelik kaşık, çatal, bıçak, 30–89 parça takımlar, servis setleri ve maşalar. Platin, Gümüş, Okyanus ve diğer modellerde üreticiden direkt satış.'),
-    (988066, "Hakkımızda | 2008'den Beri Atölyeden Sofraya | Dincel Çelik",
-     "Dincel Çelik, 2008'den beri İstanbul Bayrampaşa'daki atölyesinde paslanmaz çelik çatal, kaşık, bıçak ve servis ürünleri üretir. Hikayemiz ve değerlerimiz."),
+    (988066, "Hakkımızda | 2015'ten Beri Atölyeden Sofraya | Dincel Çelik",
+     "Dincel Çelik, 2015'ten beri İstanbul Bayrampaşa'daki atölyesinde paslanmaz çelik çatal, kaşık, bıçak ve servis ürünleri üretir. Hikayemiz ve değerlerimiz."),
     (988069, 'İletişim | Bayrampaşa Atölyesi | Dincel Çelik',
      'Dincel Çelik atölyesi: Sarı Dökümcüler Sanayi Sitesi, Bayrampaşa / İstanbul. Sipariş, toptan satış ve sorularınız için 0536 427 0557 ya da WhatsApp.'),
     (988070, 'Sıkça Sorulan Sorular | Dincel Çelik',
