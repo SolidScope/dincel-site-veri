@@ -34,6 +34,15 @@ add_filter( 'gettext', function ( $ceviri, $metin, $alan ) {
 	return $ceviri;
 }, 20, 3 );
 
+// Model (ürün etiketi) sayfalarında yol: "Ürünler “Platin” olarak etiketlendi" yerine "Platin Modeli"
+add_filter( 'woocommerce_get_breadcrumb', function ( $yol ) {
+	if ( is_product_tag() && $yol ) {
+		$son            = count( $yol ) - 1;
+		$yol[ $son ][0] = single_term_title( '', false ) . ' Modeli';
+	}
+	return $yol;
+} );
+
 /* ---------- 2–4) Ön yüz: stil ve betik ---------- */
 add_action( 'wp_footer', function () {
 	if ( is_admin() ) {

@@ -1,5 +1,6 @@
 /**
- * Eski site (dincelcelik.com, OpenCart) adreslerini yeni sitedeki karşılıklarına kalıcı (301) yönlendirir.
+ * Eski site (dincelcelik.com, OpenCart) adreslerini ve sitenin eski İngilizce adreslerini (product-category, cart vb.)
+ * yeni Türkçe karşılıklarına kalıcı (301) yönlendirir.
  *
  * Eski alan adı yolu koruyarak yeni alan adına yönlendiriyorsa (dincelcelik.com/x → dincelcelik.com.tr/x),
  * Google'ın bildiği eski sayfalar ana sayfaya ya da 404'e değil, doğru sayfaya düşer.
@@ -16,8 +17,8 @@ add_action( 'init', function () {
 	$harita = array(
 		'dincel-celik-tumurunler' => '/urunler/',
 		'tum-urunler'             => '/urunler/',
-		'kasiklar'                => '/product-category/kasik/',
-		'kasik-takimlari'         => '/product-category/kasik/',
+		'kasiklar'                => '/kategori/kasik/',
+		'kasik-takimlari'         => '/kategori/kasik/',
 		'kampanyali-urunler'      => '/urunler/',
 		'iletisim-bilgileri'      => '/iletisim/',
 	);
@@ -37,9 +38,28 @@ add_action( 'init', function () {
 		} elseif ( 0 === strpos( $rota, 'information/' ) ) {
 			$hedef = '/hakkimizda/';
 		} elseif ( 0 === strpos( $rota, 'checkout/' ) ) {
-			$hedef = '/cart/';
+			$hedef = '/sepet/';
 		} elseif ( 0 === strpos( $rota, 'account/' ) ) {
-			$hedef = '/my-account/';
+			$hedef = '/hesabim/';
+		}
+	}
+
+	// İngilizce adreslerden Türkçe adreslere (yolun geri kalanı ve sorgu korunur)
+	if ( ! $hedef && in_array( $_SERVER['REQUEST_METHOD'] ?? 'GET', array( 'GET', 'HEAD' ), true ) ) {
+		$onekler = array(
+			'product-category' => 'kategori',
+			'product-tag'      => 'model',
+			'cart'             => 'sepet',
+			'checkout'         => 'odeme',
+			'my-account'       => 'hesabim',
+			'wishlist'         => 'favorilerim',
+			'purchase-summary' => 'siparis-ozeti',
+		);
+		$parcalar = explode( '/', $yol );
+		if ( isset( $onekler[ $parcalar[0] ] ) ) {
+			$parcalar[0] = $onekler[ $parcalar[0] ];
+			$sorgu = (string) wp_parse_url( $uri, PHP_URL_QUERY );
+			$hedef = '/' . implode( '/', $parcalar ) . '/' . ( '' !== $sorgu ? '?' . $sorgu : '' );
 		}
 	}
 
