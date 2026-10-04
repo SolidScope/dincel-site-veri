@@ -92,7 +92,7 @@ add_action( 'wp_footer', function () {
 	/* Sepet: ürün kartları (tüm ekranlar) */
 	.woocommerce-cart .e-cart__column-start table.shop_table.cart,.woocommerce-cart .e-cart__column-start table.shop_table.cart tbody{display:block;border:0!important;width:100%}
 	.woocommerce-cart .e-cart__column-start table.shop_table.cart thead{display:none}
-	.woocommerce-cart .e-cart__column-start tr.cart_item{display:grid!important;grid-template-columns:96px minmax(0,1fr) auto auto 36px;grid-template-areas:"g ad adet tutar sil" "g fiyat adet tutar sil";column-gap:20px;row-gap:4px;align-items:center;background:#F7F7F7;border-radius:16px;padding:16px;margin:0 0 12px;border:0!important}
+	.woocommerce-cart .e-cart__column-start tr.cart_item{display:grid!important;grid-template-columns:96px minmax(0,1fr) auto auto 36px;grid-template-areas:"g ad adet tutar sil" "g fiyat adet tutar sil";column-gap:20px;row-gap:4px;align-items:center;background:#F7F7F7;border-radius:16px;padding:16px!important;margin:0 0 12px!important;border:0!important;box-sizing:border-box}
 	.woocommerce-cart .e-cart__column-start tr.cart_item td{display:block!important;padding:0!important;border:0!important;background:none!important;text-align:left!important;width:auto!important}
 	.woocommerce-cart .e-cart__column-start tr.cart_item td::before{display:none!important;content:none!important}
 	.woocommerce-cart .e-cart__column-start td.product-thumbnail{grid-area:g;display:block!important}
@@ -119,8 +119,11 @@ add_action( 'wp_footer', function () {
 
 	/* Kupon satırı */
 	.woocommerce-cart .e-cart__column-start .coupon{display:flex;gap:10px;align-items:center;margin-top:8px}
-	.woocommerce-cart .e-cart__column-start .coupon .coupon-col{display:flex;gap:10px;width:100%;align-items:center}
-	.woocommerce-cart .e-cart__column-start .coupon .coupon-col-start{flex:1}
+	.woocommerce-cart .e-cart__column-start .coupon .coupon-col{display:flex!important;gap:0!important;width:100%;align-items:center!important;padding:0!important;margin:0!important}
+	.woocommerce-cart .e-cart__column-start .coupon .coupon-col-start{flex:1 1 auto!important;min-width:0;margin:0 10px 0 0!important;padding:0!important;width:auto!important}
+	.woocommerce-cart .e-cart__column-start .coupon .coupon-col-end{flex:0 0 auto!important;margin:0!important;padding:0!important;width:auto!important}
+	.woocommerce-cart .e-cart__column-start .coupon input#coupon_code{margin:0!important;box-sizing:border-box}
+	.woocommerce-cart .e-cart__column-start .coupon button.e-apply-coupon{margin:0!important;white-space:nowrap;box-sizing:border-box;display:inline-flex!important;align-items:center;justify-content:center}
 	.woocommerce-cart .e-cart__column-start .coupon input#coupon_code{height:46px;border:1px solid #E0D9CD!important;border-radius:40px!important;padding:0 18px!important;background:#fff!important;width:100%}
 	.woocommerce-cart .e-cart__column-start .coupon button.e-apply-coupon{height:46px;padding:0 22px!important;border-radius:40px!important;background:#fff!important;border:1px solid #1C1A17!important;color:#1C1A17!important;text-transform:none!important;font-weight:600}
 
@@ -135,7 +138,7 @@ add_action( 'wp_footer', function () {
 	.dc-guven li::before{content:"✓";color:#796F51;font-weight:700}
 
 	@media(max-width:767px){
-		.woocommerce-cart .e-cart__column-start tr.cart_item{grid-template-columns:80px minmax(0,1fr) 36px;grid-template-areas:"g ad sil" "g fiyat fiyat" "adet adet tutar";column-gap:14px;row-gap:10px;padding:14px}
+		.woocommerce-cart .e-cart__column-start tr.cart_item{grid-template-columns:80px minmax(0,1fr) 36px;grid-template-areas:"g ad sil" "g fiyat fiyat" "adet adet tutar";column-gap:14px;row-gap:10px;padding:14px!important}
 		.woocommerce-cart .e-cart__column-start td.product-thumbnail img{width:80px!important;height:80px!important}
 		.woocommerce-cart .e-cart__column-start td.product-name{font-size:15px;align-self:center}
 		.woocommerce-cart .e-cart__column-start td.product-price{align-self:start;margin-top:-6px}
@@ -229,7 +232,8 @@ add_action( 'wp_footer', function () {
 				var $m = $(this), html = $m.html();
 				if (!/free shipping/i.test(html)) { return; }
 				var yeni = html.replace(/^\s*Add\s+/i, 'Ücretsiz kargo için ').replace(/\s*more to get Free Shipping!?\s*$/i, ' daha ekleyin');
-				yeni = yeni.replace(/(Congratulations!?\s*)?You('|’)ve got free shipping!?/i, 'Tebrikler, kargonuz ücretsiz!');
+				yeni = yeni.replace(/(Congratulations!?\s*)?You(\s+have|('|’)ve)(\s+got)?\s+free shipping!?/i, 'Tebrikler, kargonuz ücretsiz!');
+				if (/free shipping/i.test(yeni) && !/Ücretsiz kargo/.test(yeni)) { yeni = 'Kargonuz ücretsiz!'; }
 				if (yeni !== html) { $m.html(yeni); }
 			});
 		}
@@ -240,6 +244,24 @@ add_action( 'wp_footer', function () {
 			new MutationObserver(function () { clearTimeout(kz); kz = setTimeout(kargoMesaji, 30); })
 				.observe(document.body, { childList: true, subtree: true });
 		}
+
+		/* ---------- Ürün sayfası: mobil sabit sepet çubuğu ---------- */
+		// iOS Chrome/Safari'de alt araç çubuğu gizlenince bottom:0 öğeler eski alt kenarda kalıyor;
+		// çubuğu tarayıcının gerçekte görünen alanının (visualViewport) dibine sabitliyoruz.
+		(function () {
+			var bar = document.querySelector('.dc-sticky-buy'), vv = window.visualViewport;
+			if (!bar || !vv) { return; }
+			var bekleyen = false;
+			function konumla() {
+				bekleyen = false;
+				var bosluk = window.innerHeight - (vv.offsetTop + vv.height);
+				bar.style.setProperty('bottom', Math.max(0, Math.round(bosluk)) + 'px', 'important');
+			}
+			function iste() { if (!bekleyen) { bekleyen = true; requestAnimationFrame(konumla); } }
+			vv.addEventListener('resize', iste); vv.addEventListener('scroll', iste);
+			window.addEventListener('scroll', iste, { passive: true }); window.addEventListener('resize', iste);
+			konumla();
+		})();
 
 		/* ---------- Sepet: +/- adet ve otomatik güncelleme ---------- */
 		var zamanlayici = null;
