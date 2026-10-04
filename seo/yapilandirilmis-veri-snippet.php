@@ -49,6 +49,7 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 			'url'                     => home_url( '/' ),
 			'description'             => "2008'den beri İstanbul Bayrampaşa'daki atölyesinde paslanmaz çelik çatal, kaşık, bıçak ve servis ürünleri üreten Dincel Çelik.",
 			'foundingDate'            => '2008',
+			'sameAs'                  => array( 'https://www.instagram.com/dincel.celik.mutfak.esyalari/' ),
 			'telephone'               => '+90 536 427 0557',
 			'address'                 => array(
 				'@type'           => 'PostalAddress',
